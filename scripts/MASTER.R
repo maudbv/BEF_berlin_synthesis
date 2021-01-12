@@ -10,8 +10,15 @@ library(tidyr)
 library(stringr)
 
 # Path analyses:
-library(plspm)
-library(qgraph)
+# library(plspm) ### NOT LONGER ON THE CRAN! last updated 2015...
+install.packages("devtools") 
+library(devtools)
+install_github("gastonstat/plspm")
+
+# modify the plot function for visible arrow legends
+
+
+library(qgraph) 
 
 #Random forest
 library(randomForest)
@@ -24,7 +31,10 @@ source('scripts/functions/p2star.R')
 source('scripts/functions/glm.biodiv.interaction.R')
 source('scripts/functions/glm.biodiv.R')
 source('scripts/analyses/plot.plspm.boot.R')
-# Load general data
+source('scripts/analyses/plspm.plotting.R')
+
+
+# Load general BIBS data
 
 # Load vegetation and environmental data
 load(file = 'data/Berlin BIBS data 1.0.Rdata')
@@ -52,7 +62,7 @@ rownames(moss_comm) <- moss_comm$Plot_id
 moss_comm <- moss_comm[, -1]
 
 # calculate plant biodiversity vascular plants per group
-source("scripts/calculate biodiversity vegetation.R")
+source("scripts/data import/calculate biodiversity vegetation.R")
 
 Biodiv_vegetation$Organism <- "Plant"
 Biodiv_vegetation$Compartment <- "Aboveground"
@@ -73,12 +83,6 @@ Biodiv_data <- merge(Biodiv_vegetation, Biodiv_AboveInv, by = c("ID_plot"), all 
 Biodiv_data <- merge(Biodiv_data, Biodiv_BelowInv, by = c("ID_plot"), all = TRUE)
 
 rownames(Biodiv_data) <- Biodiv_data$ID_plot
-
-# Add columns
-Biodiv_data$Neophyte_RelCover <- Biodiv_data$Neophyte_Cover/ Biodiv_data$Plant_Cover
-Biodiv_data$Indigenous_RelCover <- Biodiv_data$Indigenous_Cover/ Biodiv_data$Plant_Cover
-
-Biodiv_data$Plant_Shannon <- diversity(vegcomm, index = "shannon")
 
 
 # Add Pollinator diversity data:
@@ -145,12 +149,11 @@ Env_data$TreeCover_patch <- add_data[Env_data$ID_plot,"TCD_patch"]
 Env_data$TreeCover_ring <- add_data$tcd[Env_data$ID_plot,"TCD_ring10"]
 Env_data$TreeCover_buffer <- add_data$tcd[Env_data$ID_plot,"TCD_buff10"]
 
-
 # Export data sheets in .csv
-write.csv(EF_data, "EF_data.csv")
-write.csv(plot_summary, "Environment_data.csv")
-write.csv(Biodiv_data, "Biodiversity_data.csv")
+write.csv(EF_data, "clean data/EF_data.csv")
+write.csv(plot_summary, "clean data/Environment_data.csv")
+write.csv(Biodiv_data, "clean data/Biodiversity_data.csv")
 
 # Save R objects
-save(EF_data,Env_data ,Biodiv_data, file =  "Berlin_biodiv_paper.Rdata")
+save(EF_data,Env_data ,Biodiv_data, file =  "saved Rdata/Berlin_biodiv_paper.Rdata")
 
