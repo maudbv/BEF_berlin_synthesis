@@ -2,6 +2,7 @@
 .Rhistory
 .RData
 .Ruserdata
+saved Rdata/
 Biodiversity_data.csv
 Community_vascularplants.csv
 EF_data.csv
@@ -16,3 +17,4 @@ Result outputs
 .DS_Store
 Berlin_biodiv_paper.Rdata
 Berlin_biodiv_paper.Rdata
+cormat.csv

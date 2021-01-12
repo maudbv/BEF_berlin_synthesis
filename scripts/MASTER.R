@@ -1,4 +1,5 @@
-# Master script for importing data for the Biodiversity in the City analyses
+# Master script for importing data & analyses for
+# Biodiversity & Ecosystem functioning in the City project
 
 # Packages
 library(data.table)
@@ -8,14 +9,32 @@ library(MASS)
 library(tidyr)
 library(stringr)
 
+# Path analyses:
+library(plspm)
+library(qgraph)
+
+#Random forest
+library(randomForest)
+library(randomForestExplainer)
+library(VSURF)
+
 # Load functions
 source('scripts/functions/FUNCTION add stats.R')
 source('scripts/functions/p2star.R')
 source('scripts/functions/glm.biodiv.interaction.R')
 source('scripts/functions/glm.biodiv.R')
+source('scripts/analyses/plot.plspm.boot.R')
+# Load general data
 
 # Load vegetation and environmental data
 load(file = 'data/Berlin BIBS data 1.0.Rdata')
+
+# Additional hanski, tree cover and vegetation data:
+add_data <- fread("data/BEF_Additional_biodiv_env_data+HANSKI.csv", data.table = FALSE)
+rownames(add_data) <- add_data$ID_plot
+add_data <- add_data[, -1]
+
+
 #_______________ Biodiversity data: _______________  ####
 
 #### Vegetation  ####
@@ -37,8 +56,8 @@ source("scripts/calculate biodiversity vegetation.R")
 
 Biodiv_vegetation$Organism <- "Plant"
 Biodiv_vegetation$Compartment <- "Aboveground"
-#### Invertebrates  ####
 
+#### Invertebrates  ####
 ## Import Belowground invertebrate community data
 Biodiv_BelowInv <- fread("data/Biodiv_BelowgroundInvert.csv", data.table = FALSE)
 names(Biodiv_BelowInv )[1] <- "ID_plot"
@@ -54,6 +73,17 @@ Biodiv_data <- merge(Biodiv_vegetation, Biodiv_AboveInv, by = c("ID_plot"), all 
 Biodiv_data <- merge(Biodiv_data, Biodiv_BelowInv, by = c("ID_plot"), all = TRUE)
 
 rownames(Biodiv_data) <- Biodiv_data$ID_plot
+
+# Add columns
+Biodiv_data$Neophyte_RelCover <- Biodiv_data$Neophyte_Cover/ Biodiv_data$Plant_Cover
+Biodiv_data$Indigenous_RelCover <- Biodiv_data$Indigenous_Cover/ Biodiv_data$Plant_Cover
+
+Biodiv_data$Plant_Shannon <- diversity(vegcomm, index = "shannon")
+
+
+# Add Pollinator diversity data:
+Biodiv_data <- data.frame(Biodiv_data, 
+                          add_data[Biodiv_data$ID_plot, 2:7])
 
 #_______________ Ecosystem functioning data:_______________ ####
 
@@ -73,7 +103,10 @@ EF_poll$ID_plot[EF_poll$ID_plot == "Nl_206_"] <- "Nl_206"
 ## Merge all EF
 EF_data <- merge(EF_conrad, EF_poll, by = "ID_plot", all = TRUE)
 rownames(EF_data) <- EF_data$ID_plot
-EF_data <- EF_data[rownames(vegcomm),]
+#EF_data[rownames(vegcomm),]
+
+# remove an "NA" value : mystery to be solved...
+EF_data <- EF_data[!is.na(EF_data$ID_plot),]
 
 #_______________ Environmental data: _______________ ####
 
@@ -86,6 +119,7 @@ EF_data <- EF_data[rownames(vegcomm),]
 # 
 # # Add vegetation
 # source('~/Dropbox/Work/doc boulot/postdoc Berlin/R projects/berlin_urban_gradient/scripts/Add vegetation data to plot summary.R')
+
 
 # Add the 20 plots in plot summary
 
@@ -100,6 +134,16 @@ Env_data$log_Size_Patch <- log(Env_data$Size_Patch)
 Env_data$log_ShHerb_500 <- log(Env_data$ShHerb_500)
 Env_data$log_ShGrass_500 <- log(Env_data$ShGrass_500)
 Env_data$log_Road_Dist <- log(Env_data$Road_Dist)
+Env_data$log_Railw_Dist <- log(Env_data$Railw_Dist)
+
+# Add Hanski indices of connectivity:
+Env_data$Hanski3D_DryGr <- add_data[Env_data$ID_plot,"Hanski_3D_DryGr"]
+Env_data$HanskiHist <- add_data[Env_data$ID_plot,"Hanski_Hist_Grassl"]
+
+# Add tree cover
+Env_data$TreeCover_patch <- add_data[Env_data$ID_plot,"TCD_patch"]
+Env_data$TreeCover_ring <- add_data$tcd[Env_data$ID_plot,"TCD_ring10"]
+Env_data$TreeCover_buffer <- add_data$tcd[Env_data$ID_plot,"TCD_buff10"]
 
 
 # Export data sheets in .csv
