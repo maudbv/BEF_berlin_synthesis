@@ -1,0 +1,92 @@
+#SEM examples
+
+library(piecewiseSEM)
+library(DiagrammeR)
+
+
+# Random example
+dat <- data.frame(x1 = runif(50),
+                  y1 = runif(50),
+                  y2 = runif(50),
+                  y3 = runif(50))
+
+model <- psem(lm(y1 ~ x1 + y2, dat), lm(y2 ~ x1, dat), lm(y3 ~ y1, dat))
+
+summary(model, dat, .progressBar = F)
+
+#nodes_1 <- create_node_df(
+nodes_1 <- data.frame( 
+    label = names(dat),
+    type = "lower",
+    style = "filled",
+    color = c("aqua", "coral", "coral","coral"),
+    shape = c("circle", "circle",
+              "rectangle", "rectangle"),
+    data = c(3.5, 2.6, 9.4, 2.7),
+    x = c(2,1,3,2),
+    y = c(1,2,2,3)
+    )
+
+plot(model,
+     node_attrs = nodes_1)
+
+plot(model)
+plot(model,
+     node_attrs = list(
+       label = names(dat),
+       shape = "rectangle",
+       color = "black",
+       fillcolor = "orange",
+       x = 1:4,    ## SEEMS to plot in the opposite order
+       y = 1:4
+     )
+)
+
+
+
+# Pollinator application
+
+## Pollinators
+data.poll <- cbind(Env_data[EF_data$ID_plot,
+                            c("Size_Patch",
+                              "Road_Dist",
+                              "Seal_500",
+                              "ShHerb_500",
+                              "mean_tempDay_summer",
+                              "mean_tempNight_summer")],
+                   Biodiv_data[EF_data$ID_plot,
+                               c("PlantHerb_SR","PlantHerb_Cover",
+                                 "Grass_Cover",
+                                 "Indigenous_Cover","Indigenous_SR",
+                                 "NeophyteHerb_Prop",
+                                 "NeophyteHerb_Cover",
+                                 "Pollinators_SR",
+                                 "Pollinators_Abun")],
+                   Poll =  EF_data$PollinationVisitCounts
+)
+
+data.poll = na.omit(data.poll)
+
+
+model <- psem(lm(Poll ~ Pollinators_SR +
+                    Pollinators_Abun +
+                   Indigenous_Cover + PlantHerb_Cover + PlantHerb_SR + 
+                   NeophyteHerb_Prop,
+      data = data.poll),
+      lm( Pollinators_SR ~ NeophyteHerb.prop +
+            Indigenous_SR + Pollinators_Abun +
+           mean_tempNight_summer +
+            Seal_500,
+         data = data.poll),
+     
+  lm(Indigenous_SR ~ log_Size_Patch + Seal_500 + NeophyteHerb.prop ,
+                  data = data.poll),
+  lm(NeophyteHerb.prop ~ Seal_500 , data.poll),
+  lm(mean_tempNight_summer ~ Seal_500 + log_Size_Patch,
+                 data.poll)
+                          )
+plot(model)
+summary(model)
+
+sem.plot(model, data, coef.table, corr.errors = NULL,
+         show.nonsig = TRUE, scaling = 10, alpha = 0.05, ...)
