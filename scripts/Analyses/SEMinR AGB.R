@@ -55,22 +55,25 @@ data.prod <- cbind(Env_data[EF_data$ID_plot,
                               "N",
                               "P",
                               "KAK"
-                              )],
+                            )],
                    Biodiv_data[EF_data$ID_plot,
                                c("PlantHerb_SR", #9
                                  "PlantHerb_Cover",
                                  "PlantHerb_Shannon",
-                                 "NeophyteHerb_Prop"
-                                )],
+                                 "NeophyteHerb_Prop",
+                                 "Pollinators_SR",
+                                 "Pollinators_Abun"
+                               )],
                    EF_data[, c(
-                           "AGB_C","BGB_C_total"
-                             )]
+                     "BGB_C_total", #15
+                     "BGB_C_fine",
+                     "AGB_C"
+                   )]
 )
-
 data.prod = na.omit(data.prod)
 dim(data.prod)
-data.prod$TreeCover_patch <- 100 - data.prod$TreeCover_patch
-names(data.prod)[names(data.prod)=="TreeCover_patch"] <- "Opp.TreeCover_patch"
+# data.prod$TreeCover_patch <- 100 - data.prod$TreeCover_patch
+# names(data.prod)[names(data.prod)=="TreeCover_patch"] <- "Opp.TreeCover_patch"
 
 # standardize: 
 stdze <- function(x) (x - mean(x, na.rm = T))/sd(x, na.rm = T)
@@ -81,21 +84,22 @@ varTable(data.prod)
 
 # define Latent variables with "composite" constructs (= formative) ####
 measurements <- constructs(
-  composite("patch_size", colnames(data.prod)[1]),
+  composite("patch_size", colnames(data.prod)[1:2]),
   composite("urban_matrix",  colnames(data.prod)[4:5]),
-  composite("soil_N",        colnames(data.prod)[6]),
+  composite("soil_N",        colnames(data.prod)[6:7]),
   composite("plant_div", colnames(data.prod)[9:10]),
-  composite("AG_biomass", colnames(data.prod)[13]),
-  interaction_term(iv = "plant_div", moderator = "urban_matrix")
+  composite("AG_biomass", colnames(data.prod)[17]),
+  composite("BG_biomass", colnames(data.prod)[15:16])
 )
 
-# MODEL 1: ALL with interactions ####
+# MODEL 1: ALL endogenous= SATURATED ####
 structure <- relationships(
   paths(from = c("patch_size", "soil_N","urban_matrix"),
         to = "plant_div"),
-  paths(from = c("patch_size","urban_matrix","plant_div","soil_N", 
-                 "plant_div*urban_matrix"),
-        to = "AG_biomass")
+  paths(from = c("patch_size","urban_matrix","plant_div","soil_N", "BG_biomass"),
+        to = "AG_biomass"),
+  paths(from = c("patch_size","urban_matrix","plant_div","soil_N"),
+        to = "BG_biomass")
 )
 # Run PLS-SEM model (                
 pls_model_all <- estimate_pls(data = data.prod, 
@@ -103,7 +107,7 @@ pls_model_all <- estimate_pls(data = data.prod,
                                structural_model = structure)
 summary(pls_model_all) #43%
 
-boot_estimates <- bootstrap_model(pls_model_all, nboot = 1000, cores = 2)
+boot_estimates <- bootstrap_model(pls_model_all, nboot = 500, cores = 2)
 
 # Return conf intervals: 
 confidence_interval(boot_seminr_model = boot_estimates,

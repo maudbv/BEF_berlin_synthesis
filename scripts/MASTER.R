@@ -30,9 +30,11 @@ source('scripts/functions/FUNCTION add stats.R')
 source('scripts/functions/p2star.R')
 source('scripts/functions/glm.biodiv.interaction.R')
 source('scripts/functions/glm.biodiv.R')
-source('scripts/analyses/plot.plspm.boot.R')
-source('scripts/analyses/plspm.plotting.R')
+source('scripts/functions/plot.plspm.boot.R')
+source('scripts/functions/plspm.plotting.R')
 
+# QUICK LOAD: 
+# load("saved Rdata/Berlin_biodiv_paper.Rdata")
 
 # Load general BIBS data
 
