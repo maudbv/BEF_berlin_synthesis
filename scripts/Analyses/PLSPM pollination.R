@@ -28,38 +28,29 @@ data.poll <- cbind(Env_data[EF_data$ID_plot,
 data.poll = na.omit(data.poll)
 dim(data.poll)
 
+# Log transform pollination visits: 
+data.poll$Seal_500 <- sqrt(data.poll$Seal_500 ) # more "normal" than log
+
+data.poll$Hanski3D_DryGr <- log(data.poll$Hanski3D_DryGr )
+
+# minimum ShDrY_500>0 = 0.000312925, need to account for 3 zero values.
+data.poll$ShDry_500 <- log(data.poll$ShDry_500 + 0.0003)
+data.poll$Poll.visits <- log(data.poll$Poll.visits)
+data.poll$Pollinators_SR <- log(data.poll$Pollinators_SR)
+data.poll$Wildbees_polylectic_SR <- log(data.poll$Wildbees_polylectic_SR)
+# data.poll$Herb_Neoph_insect.poll_Cover <- log(data.poll$Herb_Neoph_insect.poll_Cover )
+# data.poll$Herb_Neoph_insect.poll_SR <- log(data.poll$Herb_Neoph_insect.poll_SR)
+
 # # standardize:
 # stdze <- function(x) (x - mean(x, na.rm = T))/sd(x, na.rm = T)
-# data.poll <- as.data.frame(apply(data.poll,2,stdze))
-
-# Store data table:
-write.csv(data.poll[,- which(colnames(data.poll)  %in% c("max_summer"))], 
-          file = "pollination data.csv")
-
+# x <- as.data.frame(apply(data.poll,2,stdze))
 
 
 # define parameters:
-nboot <- 200 #bootstrap repetitions 
+nboot <- 1000 #bootstrap repetitions 
 plot.graphs <- TRUE # draw graphs for each run ?
 
 # PLSPM 1: ALL selected variable types ####
-plspm_poll_all_init <- run.plspm(
-  data = data.poll,
-  blocks = list(urban.matrix = c("Seal_500","mean_tempNight_summer"),
-                Patch = c("log_Size_Patch", "SVF"),
-                connectivity = c("Hanski3D_DryGr","ShDry_500"),
-                Neophytes = c("Herb_Neoph_insect.poll_Cover","Herb_Neoph_insect.poll_SR"),
-                Vegetation = c("Plants_insect.poll_Cover","Plants_insect.poll_SR"),
-                Poll.div  = c("Wildbees_polylectic_SR","Pollinators_SR",
-                              "Pollinators_Abun"),
-                Pollination = c("Poll.visits")
-  ),
-  paths = "saturated endo",
-  exo = 1:3,
-  modes = c("A","B","A","A", "A", "A","A"),
-  nboot = nboot,
-  graph = plot.graphs)
-
 
 # PLSPM 1bis: Restricted selected LV - no neophytes ####
 plspm_poll_all <- run.plspm(
