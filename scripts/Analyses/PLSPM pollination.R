@@ -174,15 +174,17 @@ plspm_poll_redux <- run.plspm(
 ## Plot model comparison ####
 
 quartz()
-par(cex = 0.9)
+par(mfrow= c(1,1), cex = 0.9)
 plot.plspm.boot(model = list(environment_only = plspm_poll_env,
                              all = plspm_poll_all,
                              redux = plspm_poll_redux,
+                             min = plspm_poll_min,
                              diversity_only = plspm_poll_div
 ),
 multi = TRUE)
 
 plot.plspm.boot(model =list(all = plspm_poll_all,
+                            min = plspm_poll_min,
                             environment_only = plspm_poll_env,
                             diversity_only = plspm_poll_div
 ),
