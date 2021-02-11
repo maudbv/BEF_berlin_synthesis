@@ -35,10 +35,37 @@ dim(data.prod)
 data.prod$TreeCover_patch <- 100 - data.prod$TreeCover_patch
 names(data.prod)[names(data.prod)=="TreeCover_patch"] <- "Opp.TreeCover_patch"
 
-# standardize:
-stdze <- function(x) (x - mean(x, na.rm = T))/sd(x, na.rm = T)
-data.prod <- as.data.frame(apply(data.prod,2,stdze))
 
+# Log transform pollination visits: 
+
+# Log transform richness and abundance
+var2log <-c("Hanski3D_DryGr","Poll.visits",
+            "Pollinators_SR","Wildbees_polylectic_SR")
+### FINISH CHECKING 
+data.poll[, var2log] <- log(data.poll[, var2log])
+
+# variables to sqrt transform (contain zero - also good normal fit)
+var2sqrt <-c("ShDry_500", 
+             "NeophyteHerb_Prop",
+             "Neophyte_RelCover") 
+# transformation does not work great for RelCover
+data.poll[, var2sqrt] <- sqrt(data.poll[, var2sqrt])
+
+
+# Check distributions: 
+quartz()
+par (mar = c(4,1,1,1))
+hist(data.decomp, nclass = 6)
+
+
+# standardize:
+# stdze <- function(x) (x - mean(x, na.rm = T))/sd(x, na.rm = T)
+# data.prod <- as.data.frame(apply(data.prod,2,stdze))
+
+
+# define parameters: ####
+nboot <- 1000 #bootstrap repetitions 
+plot.graphs <- TRUE # draw graphs for each run ?
 
 # PLSPM 1: ALL selected variable types ####
 plspm_prod_all <- run.plspm(

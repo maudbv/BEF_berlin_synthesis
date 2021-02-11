@@ -29,22 +29,28 @@ data.poll = na.omit(data.poll)
 dim(data.poll)
 
 # Log transform pollination visits: 
-data.poll$Seal_500 <- sqrt(data.poll$Seal_500 ) # more "normal" than log
 
-data.poll$Hanski3D_DryGr <- log(data.poll$Hanski3D_DryGr )
+# Log transform richness and abundance
+var2log <-c("Hanski3D_DryGr","Poll.visits",
+            "Pollinators_SR","Wildbees_polylectic_SR")
+### FINISH CHECKING 
+data.poll[, var2log] <- log(data.poll[, var2log])
 
-# minimum ShDrY_500>0 = 0.000312925, need to account for 3 zero values.
-data.poll$ShDry_500 <- log(data.poll$ShDry_500 + 0.0003)
-data.poll$Poll.visits <- log(data.poll$Poll.visits)
-data.poll$Pollinators_SR <- log(data.poll$Pollinators_SR)
-data.poll$Wildbees_polylectic_SR <- log(data.poll$Wildbees_polylectic_SR)
-# data.poll$Herb_Neoph_insect.poll_Cover <- log(data.poll$Herb_Neoph_insect.poll_Cover )
-# data.poll$Herb_Neoph_insect.poll_SR <- log(data.poll$Herb_Neoph_insect.poll_SR)
+# variables to sqrt transform (contain zero - also good normal fit)
+var2sqrt <-c("ShDry_500", 
+             "NeophyteHerb_Prop",
+             "Neophyte_RelCover") 
+# transformation does not work great for RelCover
+data.poll[, var2sqrt] <- sqrt(data.poll[, var2sqrt])
+
+# Check distributions: 
+quartz()
+par (mar = c(4,1,1,1))
+hist(data.decomp, nclass = 6)
 
 # # standardize:
 # stdze <- function(x) (x - mean(x, na.rm = T))/sd(x, na.rm = T)
 # x <- as.data.frame(apply(data.poll,2,stdze))
-
 
 # define parameters:
 nboot <- 1000 #bootstrap repetitions 

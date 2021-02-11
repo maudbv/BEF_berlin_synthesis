@@ -4,9 +4,7 @@
 vegcomm <- vegcomm[ ,species_data$Species]
 moss_comm <- moss_comm[ rownames(vegcomm),]
 
-# Add columns
-Biodiv_data$Neophyte_RelCover <- Biodiv_data$Neophyte_Cover/ Biodiv_data$Plant_Cover
-Biodiv_data$Indigenous_RelCover <- Biodiv_data$Indigenous_Cover/ Biodiv_data$Plant_Cover
+
 
 # trees from vegetation dataset :
 tree.species <- c('Acer', 'Acer_campestre', 'Acer_negundo', 'Acer_platanoides', 'Acer_pseudoplatanus','Crataegus_monogyna' ,'Prunus', 'Prunus_serotina','Prunus_spinosa', 'Prunus_domestica', 'Pinus_sylvestris', 'Quercus', 'Tilia', 'Populus', 'Populus_tremula', 'Quercus_robur', 'Robinia_pseudoacacia',  "Pyrus_communis_agg.","Euonymus_europaea")
@@ -91,3 +89,6 @@ Biodiv_vegetation <- data.frame(
 
  stringsAsFactors = FALSE)
 
+# Add columns
+Biodiv_vegetation$Neophyte_RelCover <- Biodiv_vegetation$Neophyte_Cover/ Biodiv_vegetation$Plant_Cover
+Biodiv_vegetation$Indigenous_RelCover <- Biodiv_vegetation$Indigenous_Cover/ Biodiv_vegetation$Plant_Cover

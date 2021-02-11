@@ -11,14 +11,14 @@ library(stringr)
 
 # Path analyses:
 # library(plspm) ### NOT LONGER ON THE CRAN! last updated 2015...
-install.packages("devtools") 
+#install.packages("devtools") 
 library(devtools)
-install_github("gastonstat/plspm")
+#install_github("gastonstat/plspm")
+library(plspm)
 
 # modify the plot function for visible arrow legends
-
-
 library(qgraph) 
+source('scripts/functions/plspm.plotting.R')
 
 #Random forest
 library(randomForest)
@@ -28,10 +28,9 @@ library(VSURF)
 # Load functions
 source('~/Dropbox/Work/doc boulot/postdoc Berlin/R projects/utility functions/FUNCTION add stats.R')
 source('~/Dropbox/Work/doc boulot/postdoc Berlin/R projects/utility functions/p2star.R')
-source('scripts/functions/glm.biodiv.interaction.R')
-source('scripts/functions/glm.biodiv.R')
+# source('scripts/functions/glm.biodiv.interaction.R')
+# source('scripts/functions/glm.biodiv.R')
 source('scripts/functions/plot.plspm.boot.R')
-source('scripts/functions/plspm.plotting.R')
 source('scripts/functions/wrapper plspm.R')
 
 # QUICK LOAD: 
