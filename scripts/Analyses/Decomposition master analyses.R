@@ -1,0 +1,73 @@
+# Decomposition rate analyses
+
+# Select a priori important variables ####
+
+## Select factors ####
+data.decomp <- cbind(Env_data[EF_data$ID_plot,
+                              c("pH",
+                                "P",
+                                "C",
+                                "N",
+                                "KAK",
+                                "Seal_500",
+                                "mean_temp_summer",
+                                "HanskiHist",
+                                "Cover_total",
+                                "Cover_litter"
+                              )],
+                     Biodiv_data[EF_data$ID_plot,
+                                 c("Plant_SR",
+                                   "NeophyteHerb_Prop",
+                                   "Neophyte_RelCover",
+                                   "BG_Decomposer_Abun",
+                                   "Decomposer_Abun",
+                                   "BG_Decomposer_TR",
+                                   "Decomposer_SR"
+                                 )],
+                     EF_data[, c("decomposition_s",
+                                 "decomposition_k"
+                     )]
+)
+
+data.decomp = na.omit(data.decomp)
+dim(data.decomp)
+
+par (mar = c(4,1,1,1), mfrow = c(4,5))
+hist(data.decomp, nclass = 6)
+# Size_Patch, Hanski3D_DryGr, ShDry_500, "Herb_Neoph_insect.decomp_SR",
+# Wildbees_polylectic_SR, decompinators_SR,decomp.visits
+
+# Transform data to avoid overly skewed distributions ####
+
+## Log transform decompination visits:
+## for richness and abundance variables, and very left skewed ditrisbutions
+var2log <-c("BG_Decomposer_Abun","Decomposer_Abun",
+            "BG_Decomposer_TR","Decomposer_SR",
+            "HanskiHist",
+            "P","N","KAK","C")
+
+data.decomp[, var2log] <- log(data.decomp[, var2log])
+
+# variables to sqrt transform (contain zero - also good normal fit)
+var2sqrt <-c("NeophyteHerb_Prop",
+             "Neophyte_RelCover") 
+# sqrt transformation does not work so great for RelCover
+data.decomp[, var2sqrt] <- sqrt(data.decomp[, var2sqrt])
+
+# Check distributions visually:
+stdze <- function(x) (x - mean(x, na.rm = T))/sd(x, na.rm = T)
+x <- as.data.frame(apply(data.decomp,2,stdze))
+par (mar = c(2,2,2,1), mfrow = c(4,5))
+sapply(colnames(x),function(i) {qqnorm(x[,i], main = i); abline(0,1)})
+
+# Run PLSPM ####
+source('scripts/Analyses/PLSPM/PLSPM decomposition.R')
+
+# Run Random Forest ####
+source('scripts/Analyses/PLSPM decompination.R')
+
+# Illustrate correlation network ####
+source('scripts/Analyses/exploratory/correlations decompination.R')
+
+# Illustrate single linear trends ####
+source('Biodiv_Berlin_paper/scripts/Analyses/illustrate trends/illustrate decompination.R')

@@ -18,7 +18,7 @@ Biodiv_vegetation <- data.frame(
   # Total vascular plants
   Plant_SR = rowSums(vegcomm>0),
   Plant_Cover = rowSums(vegcomm),
-  PlantHerb_SR = rowSums(vegcomm[,which(!names(vegcomm) %in% tree.species)]),
+  PlantHerb_SR = rowSums(vegcomm[,which(!names(vegcomm) %in% tree.species)]>0),
   PlantHerb_Cover = rowSums(vegcomm[,which(!names(vegcomm) %in% tree.species)]),
   PlantHerb_Shannon = diversity(vegcomm[,which(!names(vegcomm) %in% tree.species)],
                                          index = "shannon"),

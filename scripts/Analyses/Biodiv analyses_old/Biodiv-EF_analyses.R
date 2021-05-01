@@ -26,7 +26,8 @@ EF_data_modif <- EF_data
 # Select variables
 richness_indices <- c(  "Plant_SR", "Grass_SR", "Legume_SR",
                         "Forb_SR", "Moss_SR" , "Phanerophyte_SR",
-                        "Indigenous_SR","Archeophyte_SR","Neophyte_SR","Neophyte.prop",
+                        "Indigenous_SR","Archeophyte_SR","Neophyte_SR",
+                        "Neophyte.prop",
                         "NeophyteHerb_SR","NeophyteHerb.prop",
                         "Decomposer_SR", "Herbivores_SR",
                         "Predators_SR", "Pollinators_SR",
