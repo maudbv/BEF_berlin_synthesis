@@ -79,9 +79,6 @@ plspm_AGprod_redux <- run.plspm(
   nboot = nboot,
   graph = plot.graphs)
 
-quartz()
-plot(plspm_AGprod_redux, what = "loadings")
-
 ## Plot model comparison ####
 quartz()
 par(cex = 0.9)

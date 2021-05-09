@@ -60,6 +60,7 @@ source('scripts/Analyses/PLSPM/PLSPM BG productivity.R')
 fx_prod <- plspm_prod_redux$effects
 fx_prod <- fx_prod[grep("Prod", fx_prod$relationships),]
 
+quartz()
 par(mar = c(2,15,1,1))
 barplot(t(fx_prod[,c("direct","indirect")]),
         beside = TRUE,horiz = TRUE,
@@ -77,9 +78,18 @@ barplot(t(fx_prod[,"total"]),
 abline(v = 0)
 
 
-
-# Illustrate correlation network ####
-#source('scripts/Analyses/exploratory/correlations productivity.R')
-
-# Illustrate single linear trends ####
-#source('Biodiv_Berlin_paper/scripts/Analyses/illustrate trends/illustrate productivity.R')
+# Save results as .Rdata file
+save(data.prod, blocks.prod,
+     plspm_prod_all, plspm_prod_div,
+     plspm_prod_env, plspm_prod_min,
+     plspm_prod_redux,
+     fx_prod,
+     blocks.AGprod,
+     plspm_AGprod_all, plspm_AGprod_div,
+     plspm_AGprod_env, plspm_AGprod_min,
+     plspm_AGprod_redux,
+     blocks.BGprod,
+     plspm_BGprod_all, plspm_BGprod_div,
+     plspm_BGprod_env, plspm_BGprod_min,
+     plspm_BGprod_redux,
+     file = "saved Rdata/plspm_prod.Rdata")
