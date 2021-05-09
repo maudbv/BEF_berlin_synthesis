@@ -82,3 +82,11 @@ barplot(t(fx_decomp[,"total"]),
         las = 1, 
         col = c("firebrick", rep("slateblue", 1), "forestgreen"))
 abline(v = 0)
+
+# Save results as .Rdata file
+save(data.decomp, blocks.decomp,
+     plspm_decomp_all, plspm_decomp_div,
+     plspm_decomp_env, plspm_decomp_min,
+     plspm_decomp_redux,
+     fx_decomp,
+     file = "saved Rdata/plspm_decomp.Rdata")

@@ -62,6 +62,7 @@ source('scripts/Analyses/PLSPM/PLSPM pollination.R')
 fx_poll <- plspm_poll_redux$effects
 fx_poll <- fx_poll[grep("Pollination", fx_poll$relationships),]
 
+quartz()
 par(mar = c(2,15,1,1))
 barplot(t(fx_poll[,c(2:3)]),
         beside = TRUE,horiz = TRUE,
@@ -77,6 +78,14 @@ barplot(t(fx_poll[,4]),
         las = 1, 
         col = c("firebrick", rep("slateblue", 2), "forestgreen"))
 abline(v = 0)
+
+# Save results as .Rdata file
+save(data.poll, blocks.poll,
+     plspm_poll_all, plspm_poll_div,
+     plspm_poll_env, plspm_poll_min,
+     plspm_poll_redux,
+     fx_poll,
+     file = "saved Rdata/plspm_poll.Rdata")
 
 # Run Random Forest ####
 #source('scripts/Analyses/random forests/PLSPM pollination.R')

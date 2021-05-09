@@ -82,8 +82,6 @@ plspm_prod_redux <- run.plspm(
   nboot = nboot,
   graph = TRUE)
 
-quartz()
-plot(plspm_prod_redux, what = "loadings")
 
 ## Plot model comparison ####
 quartz()

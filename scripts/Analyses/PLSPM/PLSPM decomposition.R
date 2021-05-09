@@ -43,10 +43,6 @@ plspm_decomp_env <- run.plspm(
   nboot = nboot,
   graph = plot.graphs)
 
-quartz()
-plot(plspm_decomp_env, what = "loadings")
-
-
 # PLSPM 2is : environmental, with diversity effect  ####
 # plspm_decomp_env_div <- run.plspm(
 #   data = data.decomp,
@@ -57,10 +53,6 @@ plot(plspm_decomp_env, what = "loadings")
 #   nboot = nboot,
 #   graph = plot.graphs)
 # 
-# quartz()
-# plot(plspm_decomp_env, what = "loadings")
-# 
-# 
 # PLSPM 3: Diversity only ####
 plspm_decomp_div <- run.plspm(
   data = data.decomp,
@@ -70,10 +62,6 @@ plspm_decomp_div <- run.plspm(
   modes = modes.decomp[5:6],
   nboot = nboot,
   graph = plot.graphs)
-
-quartz()
-plot(plspm_decomp_div, what = "loadings")
-
 
 # PLSPM 4: Minimum paths ####
 plspm_decomp_min <- run.plspm(
@@ -103,31 +91,6 @@ plspm_decomp_redux <- run.plspm(
   modes = modes.decomp[c(1,2,5,6)],
   nboot = nboot,
   graph = plot.graphs)
-# 
-# 
-# plspm_decomp_redux <- run.plspm(
-#   data = data.decomp,
-#   blocks = list(urban.matrix = c("Seal_500","mean_temp_summer"),
-#                 Soil = c("P","N","KAK"),
-#                 Vegetation = c("Cover_total","Cover_litter", "Plant_SR"),
-#                 Decomp_Div  = c("BG_Decomposer_TR","Decomposer_SR",
-#                                 "Decomposer_Abun","BG_Decomposer_Abun"),
-#                 Decomposition.rate = c("decomposition_k")
-#   ),
-#   paths = rbind(
-#     urban.matrix =        c(0,0,0,0,0),
-#     Soil =                c(0,0,0,0,0),
-#     Vegetation =          c(0,0,0,0,0),
-#     Decomp_Div =          c(1,1,1,0,0),
-#     Decomposition.rate =  c(1,0,1,1,0)
-#     ),
-#   exo = 1:4,
-#   modes = c("A","B","B", "B", "A"),
-#   nboot = nboot,
-#   graph = plot.graphs)
-
-quartz()
-plot(plspm_decomp_redux, what = "loadings")
 
 
 ## Plot model comparison ####
