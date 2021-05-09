@@ -4,7 +4,7 @@ library(plspm)
 
 ## define parameters
 nboot <- 1000 #bootstrap repetitions 
-plot.graphs <- TRUE   # Should graphs be plotted for each analyses ?
+plot.graphs <- FALSE   # Should graphs be plotted for each analyses ?
 
 # block of latent variables
 blocks.BGprod = list(

@@ -3,7 +3,7 @@
 library(plspm)
 # define parameters:
 nboot <- 1000 #bootstrap repetitions 
-plot.graphs <- TRUE # draw graphs for each run ?
+plot.graphs <- FALSE # draw graphs for each run ?
 
 # define blocks of latent variables:
 blocks.poll = list(urban.matrix = c("Seal_500",

@@ -40,7 +40,7 @@ hist(data.decomp, nclass = 6)
 # Transform data to avoid overly skewed distributions ####
 
 ## Log transform decompination visits:
-## for richness and abundance variables, and very left skewed ditrisbutions
+## for richness and abundance variables, and very left skewed distributions
 var2log <-c("BG_Decomposer_Abun","Decomposer_Abun",
             "BG_Decomposer_TR","Decomposer_SR",
             "HanskiHist",
@@ -63,11 +63,22 @@ sapply(colnames(x),function(i) {qqnorm(x[,i], main = i); abline(0,1)})
 # Run PLSPM ####
 source('scripts/Analyses/PLSPM/PLSPM decomposition.R')
 
-# Run Random Forest ####
-source('scripts/Analyses/PLSPM decompination.R')
+# Extract PLSPM table of effects for reduced model:
+fx_decomp <- plspm_decomp_redux$effects
+fx_decomp <- fx_decomp[grep("Decomposition.rate", fx_decomp$relationships),]
 
-# Illustrate correlation network ####
-source('scripts/Analyses/exploratory/correlations decompination.R')
+par(mar = c(2,15,1,1))
+barplot(t(fx_decomp[,c("direct","indirect")]),
+        beside = TRUE,horiz = TRUE,
+        names.arg = fx_decomp$relationships,
+        las = 1)
+abline(v = 0)
 
-# Illustrate single linear trends ####
-source('Biodiv_Berlin_paper/scripts/Analyses/illustrate trends/illustrate decompination.R')
+# total effects
+par(mar = c(2,15,1,1))
+barplot(t(fx_decomp[,"total"]),
+        beside = TRUE,horiz = TRUE,
+        names.arg = fx_decomp$relationships,
+        las = 1, 
+        col = c("firebrick", rep("slateblue", 1), "forestgreen"))
+abline(v = 0)

@@ -57,11 +57,32 @@ sapply(colnames(x),function(i) {qqnorm(x[,i], main = i); abline(0,1)})
 # Run PLSPM ####
 source('scripts/Analyses/PLSPM/PLSPM pollination.R')
 
+
+# Extract PLSPM table of effects for reduced model:
+fx_poll <- plspm_poll_redux$effects
+fx_poll <- fx_poll[grep("Pollination", fx_poll$relationships),]
+
+par(mar = c(2,15,1,1))
+barplot(t(fx_poll[,c(2:3)]),
+        beside = TRUE,horiz = TRUE,
+        names.arg = fx_poll$relationships,
+        las = 1)
+abline(v = 0)
+
+#total effects:
+par(mar = c(2,15,1,1))
+barplot(t(fx_poll[,4]),
+        beside = TRUE,horiz = TRUE,
+        names.arg = fx_poll$relationships,
+        las = 1, 
+        col = c("firebrick", rep("slateblue", 2), "forestgreen"))
+abline(v = 0)
+
 # Run Random Forest ####
-source('scripts/Analyses/random forests/PLSPM pollination.R')
+#source('scripts/Analyses/random forests/PLSPM pollination.R')
 
 # Illustrate correlation network ####
-source('scripts/Analyses/exploratory/correlations pollination.R')
+#source('scripts/Analyses/exploratory/correlations pollination.R')
 
 # Illustrate single linear trends ####
 source('Biodiv_Berlin_paper/scripts/Analyses/illustrate trends/illustrate pollination.R')

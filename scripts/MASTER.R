@@ -1,4 +1,4 @@
-# Master script for importing data & analyses for
+# Master script for importing, cleaning and formatting data for
 # Biodiversity & Ecosystem functioning in the City project
 
 # Packages

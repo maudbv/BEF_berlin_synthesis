@@ -4,7 +4,7 @@ library(plspm)
 
 ## define parameters
 nboot <- 1000 #bootstrap repetitions 
-plot.graphs <- TRUE# draw graphs for each run ?
+plot.graphs <-  FALSE # draw graphs for each run ?
 
 # block of latent variables
 blocks.AGprod = list(

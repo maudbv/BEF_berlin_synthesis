@@ -56,6 +56,28 @@ source('scripts/Analyses/PLSPM/PLSPM productivity.R')
 source('scripts/Analyses/PLSPM/PLSPM AG productivity.R')
 source('scripts/Analyses/PLSPM/PLSPM BG productivity.R')
 
+# Extract PLSPM table of effects for reduced model:
+fx_prod <- plspm_prod_redux$effects
+fx_prod <- fx_prod[grep("Prod", fx_prod$relationships),]
+
+par(mar = c(2,15,1,1))
+barplot(t(fx_prod[,c("direct","indirect")]),
+        beside = TRUE,horiz = TRUE,
+        names.arg = fx_prod$relationships,
+        las = 1)
+abline(v = 0)
+
+# total effects
+par(mar = c(2,15,1,1))
+barplot(t(fx_prod[,"total"]),
+        beside = TRUE,horiz = TRUE,
+        names.arg = fx_prod$relationships,
+        las = 1, 
+        col = c("firebrick", rep("slateblue", 2), "forestgreen"))
+abline(v = 0)
+
+
+
 # Illustrate correlation network ####
 #source('scripts/Analyses/exploratory/correlations productivity.R')
 
