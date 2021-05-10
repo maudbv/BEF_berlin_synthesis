@@ -2,6 +2,7 @@
 .Rhistory
 .RData
 .Ruserdata
+*.Rproj
 data/
 Berlin_biodiv_paper.Rdata
 Biodiv_Berlin_paper.Rproj
