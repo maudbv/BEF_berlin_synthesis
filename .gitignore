@@ -4,18 +4,9 @@
 .Ruserdata
 saved Rdata/
 data/
-Biodiversity_data.csv
-Community_vascularplants.csv
-EF_data.csv
-Environment_data.csv
 Berlin_biodiv_paper.Rdata
 Biodiv_Berlin_paper.Rproj
-Untitled.R
-species_data_raw.csv
-SR ~Seal_500 trends.pdf
 Result outputs
 .DS_Store
 Berlin_biodiv_paper.Rdata
-Berlin_biodiv_paper.Rdata
 cormat.csv
-scripts/data import/
