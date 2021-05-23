@@ -4,7 +4,7 @@ This repository contains analyses and data from the BIBS project in Germany.
 It is currently a work in progress, aiming to put together results for a joint publication.
 
 Current authors:
-Maud Bernard-Verdier, Anne Hiller, Conrad Schittok, Tina Heger, Gabriela Onandia, Sacha Buchholz, Ingo Kowarik, Jasmin Joshi, Jonathan Jeschke
+Maud Bernard-Verdier, Anne Hiller, Conrad Schittko, Tina Heger, Gabriela Onandia, Sacha Buchholz, Moritz von der Lippe, Ingo Kowarik, Jasmin Joshi, Jonathan Jeschke
 
 ![image](https://user-images.githubusercontent.com/6454302/117579706-62247f80-b0f4-11eb-9d09-3494265787fd.jpg)
 
