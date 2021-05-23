@@ -10,7 +10,7 @@ data.decomp <- cbind(Env_data[EF_data$ID_plot,
                                 "N",
                                 "KAK",
                                 "Seal_500",
-                                "mean_temp_summer",
+                                "mean_tempNight_summer",
                                 "HanskiHist",
                                 "Cover_total",
                                 "Cover_litter"

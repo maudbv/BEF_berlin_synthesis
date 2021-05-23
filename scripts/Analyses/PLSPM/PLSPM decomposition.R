@@ -8,7 +8,7 @@ plot.graphs <- FALSE # draw graphs for each run ?
 
 # block of latent variables
 blocks.decomp = list(
-  urban.matrix =     c("Seal_500","mean_temp_summer"), 
+  urban.matrix =     c("Seal_500","mean_tempNight_summer"), 
   Soil =             c("P","N","KAK"),
   History =          c("HanskiHist"),
   Vegetation =       c("Cover_total","Cover_litter", "Plant_SR"),
