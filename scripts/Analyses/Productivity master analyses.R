@@ -93,3 +93,153 @@ save(data.prod, blocks.prod,
      plspm_BGprod_env, plspm_BGprod_min,
      plspm_BGprod_redux,
      file = "saved Rdata/plspm_prod.Rdata")
+
+load("saved Rdata/plspm_prod.Rdata")
+
+# Export results for total Productivity ####
+# Export figure of model comparison
+pdf(file = "results/productivity/model_comparison.pdf",
+    width = 10,height = 6)
+
+plot.plspm.boot(model = list(Envir = plspm_prod_env,
+                             Full_model = plspm_prod_all,
+                             Reduced = plspm_prod_redux,
+                             Urban_BEF = plspm_prod_min,
+                             BEF = plspm_prod_div
+),
+multi = TRUE, plot.legend = TRUE)
+dev.off()
+
+# export FIGURE: total effects with SE ####
+# total effects = sum of path coefficients
+
+pdf(file = "results/productivity/Total_effects.pdf",
+    width = 7,height = 4)
+
+# total effects with bootstrapped SE
+fx_prod <- plspm_prod_redux$boot$total.efs
+fx_prod <- fx_prod[grep("Prod",
+                        rownames(fx_prod)),]
+
+par(mar = c(4,15,1,1), cex =0.9)
+(b <- barplot(fx_prod$Original,
+              beside = TRUE,horiz = TRUE,
+              names.arg = rownames(fx_prod),
+              las = 1, 
+              xlim = range(c(fx_prod$perc.025, fx_prod$perc.975)),
+              col = c("firebrick", rep("slateblue", 2), "forestgreen"),
+              border = NA,
+              xlab = "Total effect"))
+arrows(fx_prod$Original +fx_prod$Std.Error, b,
+       fx_prod$Original - fx_prod$Std.Error,b,
+       angle = 90, length = 0.05, code = 3)
+abline(v = 0)
+dev.off()
+
+# export result tables for redux model:
+write.csv(plspm_prod_redux$boot$paths, 
+          file = "results/productivity/paths_redux.csv")
+write.csv(plspm_prod_redux$effects, 
+          file = "results/productivity/effects_redux.csv")
+write.csv(plspm_prod_redux$outer_model, 
+          file = "results/productivity/outer_model_redux.csv")
+
+
+
+# Export results for total AG Productivity ####
+# Export figure of model comparison
+pdf(file = "results/AG productivity/model_comparison.pdf",
+    width = 10,height = 6)
+
+plot.plspm.boot(model = list(Envir = plspm_AGprod_env,
+                             Full_model = plspm_AGprod_all,
+                             Reduced = plspm_AGprod_redux,
+                             Urban_BEF = plspm_AGprod_min,
+                             BEF = plspm_AGprod_div
+),
+multi = TRUE, plot.legend = TRUE)
+dev.off()
+
+# export FIGURE: total effects with SE ####
+# total effects = sum of path coefficients
+
+pdf(file = "results/AG productivity/Total_effects.pdf",
+    width = 7,height = 4)
+
+# total effects with bootstrapped SE
+fx_AGprod <- plspm_AGprod_redux$boot$total.efs
+fx_AGprod <- fx_AGprod[grep("AGprod",
+                        rownames(fx_AGprod)),]
+
+par(mar = c(4,15,1,1), cex =0.9)
+(b <- barplot(fx_AGprod$Original,
+              beside = TRUE,horiz = TRUE,
+              names.arg = rownames(fx_AGprod),
+              las = 1, 
+              xlim = range(c(fx_AGprod$perc.025,
+                             fx_AGprod$Original +fx_AGprod$Std.Error)),
+              col = c("firebrick", rep("slateblue",1), "forestgreen"),
+              border = NA,
+              xlab = "Total effect"))
+arrows(fx_AGprod$Original +fx_AGprod$Std.Error, b,
+       fx_AGprod$Original - fx_AGprod$Std.Error,b,
+       angle = 90, length = 0.05, code = 3)
+abline(v = 0)
+dev.off()
+
+# export result tables for redux model:
+write.csv(plspm_AGprod_redux$boot$paths, 
+          file = "results/AG productivity/paths_redux.csv")
+write.csv(plspm_AGprod_redux$effects, 
+          file = "results/AG productivity/effects_redux.csv")
+write.csv(plspm_AGprod_redux$outer_model, 
+          file = "results/AG productivity/outer_model_redux.csv")
+
+
+# Export results for total BG Productivity ####
+
+## Export figure of model comparison
+pdf(file = "results/BG productivity/model_comparison.pdf",
+    width = 10,height = 6)
+
+plot.plspm.boot(model = list(Envir = plspm_BGprod_env,
+                             Full_model = plspm_BGprod_all,
+                             Reduced = plspm_BGprod_redux,
+                             Urban_BEF = plspm_BGprod_min,
+                             BEF = plspm_BGprod_div
+),
+multi = TRUE, plot.legend = TRUE)
+dev.off()
+
+# export FIGURE: total effects with SE 
+pdf(file = "results/BG productivity/Total_effects.pdf",
+    width = 7,height = 4)
+
+## total effects with bootstrapped SE
+## total effects = sum of path coefficients
+fx_BGprod <- plspm_BGprod_redux$boot$total.efs
+fx_BGprod <- fx_BGprod[grep("BGprod",
+                            rownames(fx_BGprod)),]
+par(mar = c(4,15,1,1), cex =0.9)
+(b <- barplot(fx_BGprod$Original,
+              beside = TRUE,horiz = TRUE,
+              names.arg = rownames(fx_BGprod),
+              las = 1, 
+              xlim = range(c(fx_BGprod$perc.025,
+                             fx_BGprod$Original +fx_BGprod$Std.Error)),
+              col = c("firebrick", rep("slateblue",1), "forestgreen"),
+              border = NA,
+              xlab = "Total effect"))
+arrows(fx_BGprod$Original +fx_BGprod$Std.Error, b,
+       fx_BGprod$Original - fx_BGprod$Std.Error,b,
+       angle = 90, length = 0.05, code = 3)
+abline(v = 0)
+dev.off()
+
+# export result tables for redux model:
+write.csv(plspm_BGprod_redux$boot$paths, 
+          file = "results/BG productivity/paths_redux.csv")
+write.csv(plspm_BGprod_redux$effects, 
+          file = "results/BG productivity/effects_redux.csv")
+write.csv(plspm_BGprod_redux$outer_model, 
+          file = "results/BG productivity/outer_model_redux.csv")

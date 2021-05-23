@@ -63,30 +63,61 @@ sapply(colnames(x),function(i) {qqnorm(x[,i], main = i); abline(0,1)})
 # Run PLSPM ####
 source('scripts/Analyses/PLSPM/PLSPM decomposition.R')
 
-# Extract PLSPM table of effects for reduced model:
-fx_decomp <- plspm_decomp_redux$effects
-fx_decomp <- fx_decomp[grep("Decomposition.rate", fx_decomp$relationships),]
 
-par(mar = c(2,15,1,1))
-barplot(t(fx_decomp[,c("direct","indirect")]),
-        beside = TRUE,horiz = TRUE,
-        names.arg = fx_decomp$relationships,
-        las = 1)
-abline(v = 0)
+# Export figure of model comparison ####
+pdf(file = "results/decomposition/model_comparison.pdf",
+    width = 10,height = 6)
 
-# total effects
-par(mar = c(2,15,1,1))
-barplot(t(fx_decomp[,"total"]),
+plot.plspm.boot(model = list(Envir = plspm_decomp_env,
+                             Full_model = plspm_decomp_all,
+                             Reduced = plspm_decomp_redux,
+                             Urban_BEF = plspm_decomp_min,
+                             BEF = plspm_decomp_div
+),
+multi = TRUE, plot.legend = TRUE)
+dev.off()
+
+# export FIGURE: total effects with SE ####
+# total effects = sum of path coefficients
+
+pdf(file = "results/decomposition/Total_effects.pdf",
+    width = 7,height = 4)
+
+# total effects with bootstrapped SE
+fx_decomp <- plspm_decomp_redux$boot$total.efs
+fx_decomp <- fx_decomp[grep("Decomposition.rate",
+                            rownames(fx_decomp)),]
+
+par(mar = c(4,15,1,1), cex =0.9)
+(b <- barplot(fx_decomp$Original,
         beside = TRUE,horiz = TRUE,
-        names.arg = fx_decomp$relationships,
+        names.arg = rownames(fx_decomp),
         las = 1, 
-        col = c("firebrick", rep("slateblue", 1), "forestgreen"))
+        xlim = range(c(fx_decomp$perc.025, fx_decomp$perc.975)),
+        col = c("firebrick", rep("slateblue", 1), "forestgreen"),
+        border = NA,
+        xlab = "Total effect"))
+arrows(fx_decomp$Original +fx_decomp$Std.Error, b,
+         fx_decomp$Original - fx_decomp$Std.Error,b,
+        angle = 90, length = 0.05, code = 3)
 abline(v = 0)
+dev.off()
 
-# Save results as .Rdata file
+# export result tables for redux model:
+write.csv(plspm_decomp_redux$boot$paths, 
+          file = "results/decomposition/paths_redux.csv")
+write.csv(plspm_decomp_redux$effects, 
+          file = "results/decomposition/effects_redux.csv")
+write.csv(plspm_decomp_redux$outer_model, 
+          file = "results/decomposition/outer_model_redux.csv")
+
+
+
+# Save results as .Rdata file ####
 save(data.decomp, blocks.decomp,
      plspm_decomp_all, plspm_decomp_div,
      plspm_decomp_env, plspm_decomp_min,
      plspm_decomp_redux,
      fx_decomp,
      file = "saved Rdata/plspm_decomp.Rdata")
+

@@ -1,0 +1,7 @@
+"","relationships","direct","indirect","total"
+"1","urban.matrix -> Soil",0,0,0
+"2","urban.matrix -> Decomp_Div",-0.172455562710023,0,-0.172455562710023
+"3","urban.matrix -> Decomposition.rate",0.519764611104291,-0.117493147283477,0.402271463820814
+"4","Soil -> Decomp_Div",0.641319454302224,0,0.641319454302224
+"5","Soil -> Decomposition.rate",0,0.436927866610999,0.436927866610999
+"6","Decomp_Div -> Decomposition.rate",0.681295201135589,0,0.681295201135589

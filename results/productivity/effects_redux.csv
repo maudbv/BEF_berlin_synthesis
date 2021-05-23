@@ -1,0 +1,11 @@
+"","relationships","direct","indirect","total"
+"1","urban.matrix -> Patch",0,0,0
+"2","urban.matrix -> soil",0,0,0
+"3","urban.matrix -> Plant.div",0,0,0
+"4","urban.matrix -> Prod",-0.257200906001325,0,-0.257200906001325
+"5","Patch -> soil",0,0,0
+"6","Patch -> Plant.div",0,0,0
+"7","Patch -> Prod",0.412202674366428,0,0.412202674366428
+"8","soil -> Plant.div",0.680734741401176,0,0.680734741401176
+"9","soil -> Prod",0,0.314496169793642,0.314496169793642
+"10","Plant.div -> Prod",0.461995180598989,0,0.461995180598989

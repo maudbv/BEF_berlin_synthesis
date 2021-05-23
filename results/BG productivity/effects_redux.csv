@@ -1,0 +1,7 @@
+"","relationships","direct","indirect","total"
+"1","urban.matrix -> soil",0,0,0
+"2","urban.matrix -> Plant.div",0,0,0
+"3","urban.matrix -> BGprod",-0.40526023443053,0,-0.40526023443053
+"4","soil -> Plant.div",0.678748491546559,0,0.678748491546559
+"5","soil -> BGprod",-0.0810273644147905,0.396236940834646,0.315209576419856
+"6","Plant.div -> BGprod",0.583775795850099,0,0.583775795850099

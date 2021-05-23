@@ -28,22 +28,22 @@ plspm_poll_all <- run.plspm(
   exo = 1:4,
   modes = modes.poll,
   nboot = nboot,
-  graph = TRUE)
+  graph = plot.graphs)
 
 quartz()
 plot(plspm_poll_all, what = "loadings")
 
-# PLSPM 1bis: ALL selected variable types - no patch ####
-plspm_poll_all_nopatch <- run.plspm(
-  data = data.poll,
-  blocks = blocks.poll[-2], # remove element 2 = "Patch"
-  paths = "saturated endo",
-  exo = 1:3,
-  modes = modes.poll[-2],
-  nboot = nboot,
-  graph = plot.graphs)
-
-
+# # PLSPM 1bis: ALL selected variable types - no patch ####
+# plspm_poll_all_nopatch <- run.plspm(
+#   data = data.poll,
+#   blocks = blocks.poll[-2], # remove element 2 = "Patch"
+#   paths = "saturated endo",
+#   exo = 1:3,
+#   modes = modes.poll[-2],
+#   nboot = nboot,
+#   graph = plot.graphs)
+# 
+# 
 # PLSPM 2: Only environmental direct ####
 plspm_poll_env <- run.plspm(
   data = data.poll,
@@ -75,7 +75,7 @@ plspm_poll_min <- run.plspm(
   blocks = blocks.poll[c("urban.matrix","Poll.div","Pollination")],
   paths = "saturated endo",
   exo = 1,
-  modes = modes.poll,
+  modes = modes.poll[c(1,5:6)],
   nboot = nboot,
   graph = plot.graphs)
 
@@ -92,9 +92,9 @@ plspm_poll_redux <- run.plspm(
     Pollination =  c(0,1,1,1,0)  # remove effect of urban & Patch on poll
   ),
   exo = 1:2,
-  modes = c("A","A","A","A", "A"),
+  modes = modes.poll[-2],
   nboot = nboot,
-  graph = TRUE)
+  graph = plot.graphs)
 
 ## Plot model comparison ####
 quartz()

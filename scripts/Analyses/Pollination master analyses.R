@@ -58,26 +58,54 @@ sapply(colnames(x),function(i) {qqnorm(x[,i], main = i); abline(0,1)})
 source('scripts/Analyses/PLSPM/PLSPM pollination.R')
 
 
-# Extract PLSPM table of effects for reduced model:
-fx_poll <- plspm_poll_redux$effects
-fx_poll <- fx_poll[grep("Pollination", fx_poll$relationships),]
+# Export figure of model comparison ####
+pdf(file = "results/pollination/model_comparison.pdf",
+    width = 10,height = 6)
 
-quartz()
-par(mar = c(2,15,1,1))
-barplot(t(fx_poll[,c(2:3)]),
-        beside = TRUE,horiz = TRUE,
-        names.arg = fx_poll$relationships,
-        las = 1)
-abline(v = 0)
+plot.plspm.boot(model = list(Envir = plspm_poll_env,
+                             Full_model = plspm_poll_all,
+                             Reduced = plspm_poll_redux,
+                             Urban_BEF = plspm_poll_min,
+                             BEF = plspm_poll_div
+),
+multi = TRUE, plot.legend = TRUE)
+dev.off()
 
-#total effects:
-par(mar = c(2,15,1,1))
-barplot(t(fx_poll[,4]),
-        beside = TRUE,horiz = TRUE,
-        names.arg = fx_poll$relationships,
-        las = 1, 
-        col = c("firebrick", rep("slateblue", 2), "forestgreen"))
+# export FIGURE: total effects with SE ####
+# total effects = sum of path coefficients
+
+pdf(file = "results/pollination/Total_effects.pdf",
+    width = 7,height = 4)
+
+# total effects with bootstrapped SE
+fx_poll <- plspm_poll_redux$boot$total.efs
+fx_poll <- fx_poll[grep("Pollination",
+                            rownames(fx_poll)),]
+
+par(mar = c(4,15,1,1), cex =0.9)
+(b <- barplot(fx_poll$Original,
+              beside = TRUE,horiz = TRUE,
+              names.arg = rownames(fx_poll),
+              las = 1, 
+              xlim = range(c(fx_poll$perc.025, fx_poll$perc.975)),
+              col = c("firebrick", rep("slateblue", 2), "forestgreen"),
+              border = NA,
+              xlab = "Total effect"))
+arrows(fx_poll$Original +fx_poll$Std.Error, b,
+       fx_poll$Original - fx_poll$Std.Error,b,
+       angle = 90, length = 0.05, code = 3)
 abline(v = 0)
+dev.off()
+
+# export result tables for redux model:
+write.csv(plspm_poll_redux$boot$paths, 
+          file = "results/pollination/paths_redux.csv")
+write.csv(plspm_poll_redux$effects, 
+          file = "results/pollination/effects_redux.csv")
+write.csv(plspm_poll_redux$outer_model, 
+          file = "results/pollination/outer_model_redux.csv")
+
+
 
 # Save results as .Rdata file
 save(data.poll, blocks.poll,
@@ -94,4 +122,5 @@ save(data.poll, blocks.poll,
 #source('scripts/Analyses/exploratory/correlations pollination.R')
 
 # Illustrate single linear trends ####
-source('Biodiv_Berlin_paper/scripts/Analyses/illustrate trends/illustrate pollination.R')
+source('scripts/Analyses/illustrate trends/illustrate pollination.R')
+

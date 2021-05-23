@@ -1,0 +1,11 @@
+"","relationships","direct","indirect","total"
+"1","urban.matrix -> connectivity",0,0,0
+"2","urban.matrix -> Vegetation",0,0,0
+"3","urban.matrix -> Poll.div",-0.333169845307349,0,-0.333169845307349
+"4","urban.matrix -> Pollination",0,-0.162316656918375,-0.162316656918375
+"5","connectivity -> Vegetation",0,0,0
+"6","connectivity -> Poll.div",0,0,0
+"7","connectivity -> Pollination",0.380630919311076,0,0.380630919311076
+"8","Vegetation -> Poll.div",0,0,0
+"9","Vegetation -> Pollination",-0.429617008075172,0,-0.429617008075172
+"10","Poll.div -> Pollination",0.487188919419277,0,0.487188919419277
