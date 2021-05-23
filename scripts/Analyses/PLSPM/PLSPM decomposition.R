@@ -9,7 +9,7 @@ plot.graphs <- FALSE # draw graphs for each run ?
 # block of latent variables
 blocks.decomp = list(
   urban.matrix =     c("Seal_500","mean_tempNight_summer"), 
-  Soil =             c("P","N","KAK"),
+  Soil =             c("P","N"),
   History =          c("HanskiHist"),
   Vegetation =       c("Cover_total","Cover_litter", "Plant_SR"),
   Decomp_Div  =      c("BG_Decomposer_TR","Decomposer_SR",
@@ -17,7 +17,9 @@ blocks.decomp = list(
   Decomposition.rate =    c("decomposition_k")
 )
 
-modes.decomp = c("A","B","A","B", "B", "A")
+modes.decomp = c("A","A","A","B", "B", "A")
+# Here I have chosen "B" mode, ie "formative" mode in cases where variables were not reflecting one variable, but rather cumulatively creating a certain condition (ie decomp div).
+# Practically, this means that I chose B mode when variables were not tighlty correlated, and had uneven loadings (ie <0.7 when included in "A" mode")
 
 # PLSPM 1: ALL selected variable types ####
 plspm_decomp_all <- run.plspm(
@@ -27,7 +29,7 @@ plspm_decomp_all <- run.plspm(
   exo = 1:4,
   modes = modes.decomp,
   nboot = nboot,
-  graph = plot.graphs)
+  graph = TRUE)
 
 quartz()
 plot(plspm_decomp_all, what = "loadings")
@@ -90,7 +92,7 @@ plspm_decomp_redux <- run.plspm(
   exo = 1:2,
   modes = modes.decomp[c(1,2,5,6)],
   nboot = nboot,
-  graph = plot.graphs)
+  graph = TRUE)
 
 
 ## Plot model comparison ####

@@ -18,7 +18,7 @@ blocks.prod = list(
 )
 
 # modes.prod= c("A","B","B","A","A", "B")
-modes.prod= c("A","A","A","A","A", "B")
+modes.prod= c("A","B","A","A","A", "B")
 
 # PLSPM 1: ALL selected variable types ####
 plspm_prod_all <- run.plspm(

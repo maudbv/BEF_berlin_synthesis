@@ -17,7 +17,7 @@ blocks.AGprod = list(
   AGprod = c("AGB_C")
 )
 
-modes.AGprod= c("A","A","A","A","A", "A")
+modes.AGprod= c("A","B","A","A","A", "A")
 
 # PLSPM 1: ALL selected variable types ####
 plspm_AGprod_all <- run.plspm(
@@ -27,7 +27,7 @@ plspm_AGprod_all <- run.plspm(
   exo = 1:4,
   modes = modes.AGprod,
   nboot = nboot,
-  graph = plot.graphs)
+  graph = TRUE)
 
 quartz()
 plot(plspm_AGprod_all, what = "loadings")
