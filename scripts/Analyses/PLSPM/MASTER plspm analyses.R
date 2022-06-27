@@ -9,6 +9,9 @@ library(MASS)
 library(tidyr)
 library(stringr)
 
+# For ordinations:
+library(FactoMineR)
+
 # Path analyses:
 # library(plspm) ### NO LONGER ON THE CRAN! last updated 2015...
 # install.packages("devtools") 
@@ -26,8 +29,8 @@ library(randomForestExplainer)
 library(VSURF)
 
 # Load functions ####
-source('~/Dropbox/Work/doc boulot/postdoc Berlin/R projects/utility functions/FUNCTION add stats.R')
-source('~/Dropbox/Work/doc boulot/postdoc Berlin/R projects/utility functions/p2star.R')
+source('scripts/functions/FUNCTION add stats.R')
+source('scripts/functions/p2star.R')
 source('scripts/functions/plot.plspm.boot.R')
 source('scripts/functions/wrapper plspm.R')
 
@@ -43,10 +46,10 @@ rownames(Biodiv_data) <-Biodiv_data$ID_plot
 
 
 # Run Decomposition analyses ####
-source('scripts/Analyses/Decomposition master analyses.R', echo=TRUE)
+source('scripts/Analyses/PLSPM/Decomposition master analyses.R', echo=TRUE)
 
 # Run Pollination analyses ####
-source('scripts/Analyses/Pollination master analyses.R', echo=TRUE)
+source('scripts/Analyses/PLSPM/Pollination master analyses.R', echo=TRUE)
 
 # Run Productivity analyses ####
-source('scripts/Analyses/Productivity master analyses.R', echo=TRUE)
+source('scripts/Analyses/PLSPM/Productivity master analyses.R', echo=TRUE)

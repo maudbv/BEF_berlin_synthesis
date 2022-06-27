@@ -26,8 +26,8 @@ library(randomForestExplainer)
 library(VSURF)
 
 # Load functions
-source('~/Dropbox/Work/doc boulot/postdoc Berlin/R projects/utility functions/FUNCTION add stats.R')
-source('~/Dropbox/Work/doc boulot/postdoc Berlin/R projects/utility functions/p2star.R')
+source('scripts/functions/FUNCTION add stats.R')
+source('scripts/functions/p2star.R')
 # source('scripts/functions/glm.biodiv.interaction.R')
 # source('scripts/functions/glm.biodiv.R')
 source('scripts/functions/plot.plspm.boot.R')
